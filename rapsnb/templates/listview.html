@@ -8,6 +8,18 @@
 <body>
 
     <div id="all">
+{% include 'nav.html' %}
+
+        <div id="heading-breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h1>Catalog</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="content">
             
             <div class="container">
@@ -26,12 +38,16 @@
                         <div class="col-md-8">
                             <div class="project-more">
                                 <h4>LINK:</h4>
-                                <p>{{i.image}}</p>
-
-
-                                <button onclick="uplink(prompt('Enter new link'),{{i.id}})">EDIT</button></a>
-                                <button onclick="delink(confirm('Are you sure you want to delete this image?'),{{i.id}})">DELETE</button>
-
+                                <p>{{i.image}}</p>                            
+                                <form method="POST" action="./catalogedit" id="edit_form" style="display:none">
+                                    <input name="id" value="{{i.id}}">
+                                    <input name="link" id="link" value="">
+                                </form>
+                                <button onclick="uplink()" type="" name='prompt' id="delete_form">EDIT</button>
+                                <form method="POST" action="./catalogdelete">
+                                    <input type="hidden" name="id" value="{{i.id}}">
+                                    <button onclick="return confirm('Are you sure you want to delete this image?')">DELETE</button>
+                                </form>
                                 
                             </div>
                         </div>
@@ -50,6 +66,66 @@
 
 
         </div>
+        <!-- /#content -->
+       <!-- *** FOOTER ***
+_________________________________________________________ -->
+ <footer id="footer">
+            <div class="container">
+                <div class="col-md-6 col-sm-6">
+                    <h4>About us</h4>
+
+                    <p>We are utensil manufacturers who believe in excellence.</p>
+
+                    
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                </div>
+
+                <div class="col-md-6 col-sm-6">
+
+                    <h4>Contact</h4>
+
+                    <p><strong>Prem Udyog</strong>
+                        <br>Manohar Colony ,
+                        <br>Jagadhri
+                        <br>135001
+                        <strong>India</strong>
+                    </p>
+
+                    <a href="contact.html" class="btn btn-small btn-template-main">Go to contact page</a>
+
+                    <hr class="hidden-md hidden-lg hidden-sm">
+
+                </div>
+				
+
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- /#footer -->
+
+        <!-- *** FOOTER END *** -->
+
+        <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+
+         <div id="copyright">
+            <div class="container">
+                <div class="col-md-12">
+                    <p class="pull-left">&copy; Prem Udyog</p>
+                    <!-- <p class="pull-right">Template by <a href="https://bootstrapious.com">Bootstrapious</a> & <a href="https://remoteplease.com">Remote Please</a> -->
+                         <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <!-- /#copyright -->
+
+        <!-- *** COPYRIGHT END *** -->
+
+
+
     </div>
     <!-- /#all -->
 
@@ -59,26 +135,33 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js">
     </script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script src="{{ url_for('static', filename='jquery.cookie.js') }}"></script>
+    <script src="{{ url_for('static', filename='waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.parallax-1.1.3.js') }}"></script>
+    <script src="{{ url_for('static', filename='front.js') }}"></script>
     <script>
-        function uplink(nlink,id){
-            alert(nlink)
-            alert(id)
-            if (nlink == null || nlink == ""){
-                return
-            }
-            else {
-                window.location.replace("{{url_for('catalogedit',nlink=nlink, id=id)}}")
-                alert("else")
+        function delink(){
+            if (confirm('Are you sure you want to delete this image?')){
+                document.getElementById("delete_form").submit();
             }
         };
-        function delink(conf,id){
-            alert(id)
-            alert(conf)
-            if (conf) {
-                window.location.replace("{{url_for('catalogdelete',idl=id)}}")
-                
+        function uplink(){
+            link = document.getElementById("link");
+            link.value = prompt('Enter new link');
+            if(link.value){
+                document.getElementById("edit_form").submit();
             }
+            else return
         };
     </script>
+    
+    
+
+    
+
+
 </body>
+
 </html>
